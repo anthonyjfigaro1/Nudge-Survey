@@ -270,10 +270,14 @@
   @media (max-width: 760px) {
     nav { padding: 1rem 1.25rem; }
     .nav-links { gap: 1rem; }
-    .problem-grid, .how-layout, .gl-layout, .diff-grid { grid-template-columns: 1fr; }
+    .problem-grid, .gl-layout, .diff-grid { grid-template-columns: 1fr; }
     .problem-card:first-child { border-radius: var(--radius) var(--radius) 0 0; }
     .problem-card:last-child { border-radius: 0 0 var(--radius) var(--radius); }
-    .app-teaser { position: static; }
+    .how-layout { grid-template-columns: 1fr; gap: 2rem; }
+    .app-teaser { position: static; width: 100%; max-width: 100%; margin: 0 auto; overflow: hidden; }
+    .profile-teaser { width: 100%; max-width: 100%; overflow: hidden; }
+    .slider-outer { width: 100%; overflow: hidden; }
+    .slide { min-width: 100%; width: 100%; }
     footer { flex-direction: column; text-align: center; }
   }
 </style>
@@ -518,7 +522,7 @@
       <div class="diff-card">
         <div class="diff-icon">⚖️</div>
         <div class="diff-title">Neither person has the upper hand</div>
-        <div class="diff-desc">Blind mutual likes mean you don't know who liked you until it's mutual. No power imbalance, no awkwardness, just an equal moment of connection for both of you.</div>
+        <div class="diff-desc">Blind mutual likes mean you don't know who liked you until it's mutual. No power imbalance, no awkwardness, just an equal opportunity for real-world connection for both of you.</div>
       </div>
       <div class="diff-card">
         <div class="diff-icon">📍</div>
