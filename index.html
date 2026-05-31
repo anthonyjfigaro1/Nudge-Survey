@@ -177,7 +177,7 @@
   .slide-dots { display: flex; gap: 4px; align-items: center; }
   .sdot { width: 5px; height: 5px; border-radius: 50%; background: rgba(245,239,230,0.15); transition: all 0.2s; }
   .sdot.active { background: var(--red-light); width: 14px; border-radius: 99px; }
-  .slider-outer { overflow: hidden; }
+  .slider-outer { overflow: hidden; cursor: pointer; }
   .slider-track { display: flex; transition: transform 0.35s cubic-bezier(0.4,0,0.2,1); }
   .slide { min-width: 100%; background: #1A1210; }
   .photo-area { height: 220px; background: linear-gradient(160deg, #2A1A1A 0%, #1A1010 60%, #0D0808 100%); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
@@ -576,12 +576,49 @@
 
 <script>
 function lGoTo(n) {
-  document.getElementById('ltrack').style.transform = `translateX(-${n * 100}%)`;
-  [0,1,2].forEach(i => {
-    document.getElementById('ld'+i).className = 'sdot' + (i===n?' active':'');
-    document.getElementById('ln'+i).className = 'nav-btn' + (i===n?' active':'');
-  });
+  var track = document.getElementById('ltrack');
+  if (!track) return;
+  track.style.transform = 'translateX(-' + (n * 100) + '%)';
+  for (var i = 0; i < 3; i++) {
+    var dot = document.getElementById('ld' + i);
+    var btn = document.getElementById('ln' + i);
+    if (dot) dot.className = 'sdot' + (i === n ? ' active' : '');
+    if (btn) btn.className = 'nav-btn' + (i === n ? ' active' : '');
+  }
+  currentSlide = n;
 }
+
+var currentSlide = 0;
+var touchStartX = 0;
+var touchEndX = 0;
+
+document.addEventListener('DOMContentLoaded', function() {
+  var outer = document.querySelector('.slider-outer');
+  if (!outer) return;
+
+  // Click anywhere on tile to advance
+  outer.addEventListener('click', function(e) {
+    var next = (currentSlide + 1) % 3;
+    lGoTo(next);
+  });
+
+  // Touch swipe support
+  outer.addEventListener('touchstart', function(e) {
+    touchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+
+  outer.addEventListener('touchend', function(e) {
+    touchEndX = e.changedTouches[0].screenX;
+    var diff = touchStartX - touchEndX;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0 && currentSlide < 2) {
+        lGoTo(currentSlide + 1);
+      } else if (diff < 0 && currentSlide > 0) {
+        lGoTo(currentSlide - 1);
+      }
+    }
+  }, { passive: true });
+});
 </script>
 </body>
 </html>
